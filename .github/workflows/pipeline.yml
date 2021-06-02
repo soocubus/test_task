@@ -33,5 +33,5 @@ jobs:
     runs-on: self-hosted
     steps:
       - run: echo "Healthchecking now..."
-      - run: curl localhost:80
+      - run: curl --fail http://localhost/testme || exit 1
       - run: echo "Healthy!"
