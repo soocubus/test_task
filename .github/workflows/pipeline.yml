@@ -24,7 +24,7 @@ jobs:
     runs-on: self-hosted
     steps:
       - run: echo "Stopping existing container"
-      - run: docker stop http.server && docker rm http.server
+      - run: docker stop http.server && docker rm http.server || exit 0
       - run: echo "Stopped and deleted!"
   start:
     name: Start
