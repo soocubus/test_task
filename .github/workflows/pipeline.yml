@@ -1,0 +1,37 @@
+name: GitHub Actions Pipeline
+on: 
+  push:
+    branches:
+      - master
+jobs:
+  checkout:
+    name: Checkout
+    runs-on: self-hosted
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+  build:
+    name: Build
+    needs: [checkout]
+    runs-on: self-hosted
+    steps:
+      - run: echo "Building local container..."
+      - run: docker build -t http.server .
+      - run: echo "Building finished!"
+  start:
+    name: Start
+    needs: [checkout, build]
+    runs-on: self-hosted
+    steps:
+      - run: echo "Now starting container..."
+      - run: docker run -d http.server
+      - run: echo "Started!"
+  healthcheck:
+    name: Healthcheck
+    needs: [checkout, build, start]
+    runs-on: self-hosted
+    steps:
+      - run: echo "Healthchecking now..."
+      - run: curl localhost:80
+      - run: echo "Healthy!"
