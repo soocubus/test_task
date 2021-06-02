@@ -19,6 +19,13 @@ jobs:
       - run: echo "Building local container..."
       - run: docker build -t http.server .
       - run: echo "Building finished!"
+  stop:
+    name: Stop
+    runs-on: self-hosted
+    steps:
+      - run: echo "Stopping existing container"
+      - run: docker stop http.server && docker rm http.server
+      - run: echo "Stopped and deleted!"
   start:
     name: Start
     needs: [checkout, build]
